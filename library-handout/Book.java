@@ -1,6 +1,6 @@
 /**
  * Encapusulates information about a book.
- * @author Balaji Srinivasan
+ * @author Balaji Srinivasan, Judy Luo
  */
 public class Book {
     String title;
@@ -64,16 +64,40 @@ public class Book {
         numberOfCopies += numCopiesToAdd;
     }
 
+    /**
+     * convert the book class to hash code
+     * @return the int hash value based on the class' properties
+     */
     @Override
     public int hashCode() {
-        // TODO: Implement an appropriate hash code for a book.
-        throw new UnsupportedOperationException("Not implemented");
+        int result = 17;
+        result = 31 * result + (title == null ? 0 : title.hashCode());
+        result = 31 * result + (author == null ? 0 : author.hashCode());
+        result = 31 * result + (isbn == null ? 0 : isbn.hashCode());
+        result = 31 * result + publicationYear + numberOfCopies;
+        //return Objects.hash(title,author,isbn,publicationYear,numberOfCopies);
+        return result;
     }
 
+    /**
+     * compare two books if they have the same Title, Author, and ISBN
+     * @param that the book object to get compared with the current book
+     * @return true if both books share the same identities, else false
+     * @exception NullPointerException the input object contains empty value(s)
+     * @exception IllegalArgumentException the input object is not book class
+     */
     @Override
     public boolean equals(Object that) {
-        // TODO: Implement this method.
-        // NOTE: Two books are the same only if the Title, Author, and ISBN matches
-        throw new UnsupportedOperationException("Not implemented");
+        //check if Object that is a book class
+        if (that.getClass() != Book.class){
+            throw new IllegalArgumentException("the input object is not book class");
+        }
+        try {
+            Book thatBook = (Book) that;
+            //compare properties
+            return thatBook.getTitle().equals(title) && thatBook.getAuthor().equals(author) && thatBook.getIsbn().equals(isbn);
+        } catch (NullPointerException e) {
+            throw new NullPointerException("the object contains empty value(s)");
+        }
     }
 }
