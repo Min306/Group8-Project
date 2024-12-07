@@ -1,11 +1,12 @@
 import java.util.Scanner;
+import java.util.LinkedList;
 
 /**
  * A library management class. Has a simple shell that users can interact with to add/remove/checkout/list books in the library.
  * Also allows saving the library state to a file and reloading it from the file.
  */
 public class Library {
-
+	LinkedList<Book> library = new LinkedList<Book>();
 
     /**
      * Adds a book to the library. If the library already has this book then it
@@ -13,7 +14,13 @@ public class Library {
      */
     public void addBook(Book book) {
         // TODO: Implement this method.
-        throw new UnsupportedOperationException("not implemented");
+	library.add(book);
+        for(int i = 0; i < library.size(); i++) {
+	    if(book.equals(book)) {
+              book.addCopies(book.numberOfCopies);
+	    }
+        }
+        // throw new UnsupportedOperationException("not implemented");
     }
 
     /**
@@ -22,7 +29,22 @@ public class Library {
      */
     public void checkout(String isbn) {
         // TODO: Implement this method.
-        throw new UnsupportedOperationException("not implemented");
+        for(int i = 0; i < library.size(); i++) {
+                    
+            if(library.get(i).getIsbn().equals(isbn)) {
+	        if(library.get(i).getNumberOfCopies() == 0) {
+		    throw new UnsupportedOperationException("There are no more copies left in the library");
+                }
+			
+                library.get(i).addCopies(-1);
+        	library.remove(i);
+                break;
+			
+            } else if(i == library.size() - 1) {
+                throw new NoSuchElementException("This book is not in the library");
+            }
+        }
+	// throw new UnsupportedOperationException("not implemented");
     }
 
     /**
