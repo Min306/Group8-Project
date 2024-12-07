@@ -67,16 +67,21 @@ public class Book {
     /**
      * convert the book class to hash code
      * @return the int hash value based on the class' properties
+     * @exception IllegalArgumentException the input object is not book class
      */
     @Override
     public int hashCode() {
-        int result = 17;
-        result = 31 * result + (title == null ? 0 : title.hashCode());
-        result = 31 * result + (author == null ? 0 : author.hashCode());
-        result = 31 * result + (isbn == null ? 0 : isbn.hashCode());
-        result = 31 * result + publicationYear + numberOfCopies;
-        //return Objects.hash(title,author,isbn,publicationYear,numberOfCopies);
-        return result;
+        try{
+            int result = 17;
+            result = 31 * result + (title == null ? 0 : title.hashCode());
+            result = 31 * result + (author == null ? 0 : author.hashCode());
+            result = 31 * result + (isbn == null ? 0 : isbn.hashCode());
+            result = 31 * result + publicationYear + numberOfCopies;
+            //return Objects.hash(title,author,isbn,publicationYear,numberOfCopies);
+            return result;
+        } catch (NullPointerException e) {
+            throw new NullPointerException("the object contains empty value(s)");
+        }
     }
 
     /**
