@@ -120,160 +120,144 @@ public class Library {
         throw new UnsupportedOperationException("not implemented");
     }
 
-	public static void main(String[] args) {
-		Scanner scanner = new Scanner(System.in);
+    public static void main(String[] args) {
+	 Library library = new Library();
+    	 Scanner scanner = new Scanner(System.in);
 
-		while (true) {
-			System.out.print("library> ");
-			String line = scanner.nextLine();
-			// TODO: Implement code 
-			if (line.isEmpty()) {
-              	System.out.println("Error: Input cannot be empty.");
-               	continue;
-			}
-            if (line.startsWith("add")) {
-				String[] parts = line.split(" ");
-				// The format of the line is
-				if (parts.length != 6) {
-					System.out.println("Invalid format. Correct format: add title author isbn publicationYear numberOfCopies");
-       					continue;
-   				}
-				// add title author isbn publicationYear numberOfCopies
-				String title = parts[1];
-				String author = parts[2];
-				String isbn = parts[3];
-				int publicationYear;
-				int numberOfCopies;
-				 if (title.isEmpty() || author.isEmpty() || isbn.isEmpty()) {
-					 System.out.println("Error: Title, author, and ISBN cannot be empty.");
-       					 continue;
-  				}   try {
-					 publicationYear = Integer.parseInt(parts[4]);
-					 numberOfCopies = Integer.parseInt(parts[5]);
-				} catch (NumberFormatException e) {
-					 System.out.println("Error: Publication year and number of copies must be valid numbers.");
-        				continue;
-   				 }
-				// NOTE: If a book already exists in the library, then the number of copies should be incremented by this amount.
-				Book existingBook = library.findByISBN(isbn);
-				 if (existingBook != null) {
-					 existingBook.addCopies(numberOfCopies);
-					 System.out.println("Book already exists. Number of copies updated.");
-				 }else {
-					  Book newBook = new Book(title, author, isbn, publicationYear, numberOfCopies);
-					  library.addBook(newBook);
-					  System.out.println("Book added successfully.");
-				 }
-			} else if (line.startsWith("checkout")) {
-				// TODO: Implement this case.
-				 String[] parts = line.split(" ");
-				// The format of the line is
-				if (parts.length != 2) {
-					System.out.println("Invalid format. Correct format: checkout isbn");
-					continue;
-				// checkout isbn
-				} String isbn = parts[1];
-				  try {
-					library.checkout(isbn);
-					System.out.println("Book checked out successfully.");
-				// NOTE: If the book doesnt exist in the library, then the code should print an error.
-				 } catch (Exception e) {
-					   System.out.println("Error: " + e.getMessage());
-				  }
-				// NOTE: If the book doesnt exist in the library, then the code should print an error.
-		         } else if (line.startsWith("findByTitleAndAuthor")) {
-				// TODO: Implement this case.
-				String[] parts = line.split(" ");
-				// The format of the line is
-				if (parts.length != 3) {
-					System.out.println("Invalid format. Correct format: findByTitleAndAuthor title author");
-					 continue;
-				}String title = parts[1];
-				String author = parts[2];
-				// NOTE: If the book doesnt exist in the library, then the code should print an error.
-				if (title.isEmpty() || author.isEmpty()) {
-					 System.out.println("Error: Title and author cannot be empty.");
-					 continue;
-				// findByTitleAndAuthor <title> <author>
-				// If the book exists in the library, this code should print the ISBN, number of copies in the library, and the number of copies availabvle
-				}try {
-					Book book = library.findByTitleAndAuthor(title, author);
-					 if (book == null) {
-						 System.out.println("Error: Book not found.");
-					} else {
-						 System.out.println("ISBN: " + book.getIsbn() + ", Copies in Library: " + book.getNumberOfCopies());
-					 } 
-				}catch (Exception e) {
-					 System.out.println("Error: " + e.getMessage());
-				}
-				
-			} else if (line.startsWith("return")) {
-				// TODO: Implement this case.
-				String[] parts = line.split(" ");
-				// Format of the line is
-				if (parts.length != 2) {
-					 System.out.println("Invalid format. Correct format: return isbn");
-					 continue;
-				}String isbn = parts[1];
-				// return <isbn>
-				// NOTE: If the book was never checked out, this code should print an error.
-				 try {
-					 library.returnBook(isbn);
-					  System.out.println("Book returned successfully.");
-				 
-				} catch (Exception e) {
-					  System.out.println("Error: " + e.getMessage());
-					  }
-				
-			} else if (line.startsWith("list")) {
-				// TODO: Implement this case.
-				String[] parts = line.split(" ");
-				// Format of the line is 
-				if (parts.length != 2) {
-					System.out.println("Invalid format. Correct format: list isbn");
-					continue;
-				} String isbn = parts[1];
-				// list <isnb>
-				// NOTE: This code should print out the number of copies in the library and the number of copies available.
-				 try {
-					  Book book = library.findByISBN(isbn);
-					  if (book == null) {
-						   System.out.println("Error: Book not found.");
-					  } else {
-						    System.out.println("Copies in library: " + book.getNumberOfCopies() + ", Available copies: " + book.getNumberOfCopies());
-					  }
-				 } catch (Exception e) {
-					  System.out.println("Error: " + e.getMessage());
-				 }
-			} else if (line.startsWith("save")) {
-				// TODO: Implement this case.
-				 String[] parts = line.split(" ");
-				// Format of the line is
-				 if (parts.length != 2) {
-					System.out.println("Invalid format. Correct format: save filename");
-					continue;
-				 } String filename = parts[1];
-				// save <filename>
-				 library.save(filename);
-				 System.out.println("Library saved to " + filename);
-		        } else if (line.startsWith("load")) {
-				// TODO: Implement this case.
-				String[] parts = line.split(" ");
-				// Format of the line is:
-				if (parts.length != 2) {
-					System.out.println("Invalid format. Correct format: load filename");
-					continue;
-				}String filename = parts[1];
-				// load <filename>
-				library.load(filename);
-				System.out.println("Library loaded from " + filename);
-			
-			} else if (line.startsWith("exit")) {
-				System.out.println("Exiting the system.");
-				break;
-			} else { 
-				System.out.println(" Invalid command(input): try again");
-			}
-		}
-	}
+         while (true) {
+       	 	System.out.print("library> ");
+        	String line = scanner.nextLine().trim();
+        if (line.isEmpty()) {
+            System.out.println("Error: Input cannot be empty.");
+            continue;
+        }
+
+        if (line.startsWith("add")) {
+            String[] parts = line.split(" ", 6);
+            if (parts.length != 6) {
+                System.out.println("Invald-->Usage: add <title> <author> <isbn> <year> <copies>");
+                continue;
+            }
+            String title = parts[1];
+            String author = parts[2];
+            String isbn = parts[3];
+            int year = Integer.parseInt(parts[4]);
+            int copies = Integer.parseInt(parts[5]);
+
+            if (title.isEmpty() || author.isEmpty() || isbn.isEmpty()) {
+                 System.out.println("Error: Title, author, and ISBN cannot be empty.");
+                 continue;
+            }
+
+            // Validate if year and copies are numbers (already done above but keep for clarity)
+            try {
+                 year = Integer.parseInt(parts[4]);
+                 copies = Integer.parseInt(parts[5]);
+            } catch (NumberFormatException e) {
+                 System.out.println("Error: Publication year and number of copies must be valid numbers.");
+                 continue;
+            }
+
+            // NOTE: If a book already exists in the library, then the number of copies should be incremented by this amount.
+            Book existingBook = library.findByISBN(isbn);
+            if (existingBook != null) {
+                 existingBook.addCopies(copies);
+                 System.out.println("Book already exists. Number of copies updated.");
+            } else {
+                 Book newBook = new Book(title, author, isbn, year, copies);
+                 library.addBook(newBook);
+                 System.out.println("Book added successfully.");
+            }
+        } else if (line.startsWith("checkout")) {
+            String[] parts = line.split(" ");
+            if (parts.length != 2) {
+                System.out.println("Invalid format. Correct format: checkout isbn");
+                continue;
+            }
+            String isbn = parts[1];
+            try {
+                library.checkout(isbn);
+                System.out.println("Book checked out successfully.");
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        } else if (line.startsWith("findByTitleAndAuthor")) {
+            String[] parts = line.split(" ");
+            if (parts.length != 3) {
+                System.out.println("Invalid format. Correct format: findByTitleAndAuthor title author");
+                continue;
+            }
+            String title = parts[1];
+            String author = parts[2];
+            if (title.isEmpty() || author.isEmpty()) {
+                System.out.println("Error: Title and author cannot be empty.");
+                continue;
+            }
+
+            try {
+                Book book = library.findByTitleAndAuthor(title, author);
+                if (book == null) {
+                    System.out.println("Error: Book not found.");
+                } else {
+                    System.out.println("ISBN: " + book.getIsbn() + ", Copies in Library: " + book.getNumberOfCopies());
+                }
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        } else if (line.startsWith("return")) {
+            String[] parts = line.split(" ");
+            if (parts.length != 2) {
+                System.out.println("Invalid format. Correct format: return isbn");
+                continue;
+            }
+            String isbn = parts[1];
+            try {
+                library.returnBook(isbn);
+                System.out.println("Book returned successfully.");
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        } else if (line.startsWith("list")) {
+            String[] parts = line.split(" ");
+            if (parts.length != 2) {
+                System.out.println("Invalid format. Correct format: list isbn");
+                continue;
+            }
+            String isbn = parts[1];
+            try {
+                Book book = library.findByISBN(isbn);
+                if (book == null) {
+                    System.out.println("Error: Book not found.");
+                } else {
+                    System.out.println("Copies in library: " + book.getNumberOfCopies() + ", Available copies: " + book.getNumberOfCopies());
+                }
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        } else if (line.startsWith("save")) {
+            String[] parts = line.split(" ");
+            if (parts.length != 2) {
+                System.out.println("Invalid format. Correct format: save filename");
+                continue;
+            }
+            String filename = parts[1];
+            library.save(filename);
+            System.out.println("Library saved to " + filename);
+        } else if (line.startsWith("load")) {
+            String[] parts = line.split(" ");
+            if (parts.length != 2) {
+                System.out.println("Invalid format. Correct format: load filename");
+                continue;
+            }
+            String filename = parts[1];
+            library.load(filename);
+            System.out.println("Library loaded from " + filename);
+        } else if (line.startsWith("exit")) {
+            System.out.println("Exiting the system.");
+            break;
+        } else {
+            System.out.println("Invalid command(input): try again");
+        }
+    }
+}
 }
