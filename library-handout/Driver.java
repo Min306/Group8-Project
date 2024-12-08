@@ -19,5 +19,45 @@ public class Driver extends DriverBase {
        for(Book book : library.getBooks()) {
            System.out.println(book);
        }
+
+       //Book class test cases
+       //Test case #1: get hashcode for a completely null book object
+        Book a = new Book(null, null, null, 0, 0);
+        System.out.println(a.hashCode());
+
+        //Test case #2: get hashcode for a half null object
+        Book b = new Book("book name", "author name", null, 0, 0);
+        System.out.println(b.hashCode());
+
+        //Test case #3: get hashcode for a completed book object
+        Book c = new Book("book name", "author name", "123456", 2024, 5);
+        System.out.println(c.hashCode());
+
+        //Test case #4: compare two null book objects
+        Book d = new Book(null, null, null, 0, 0);
+        try {
+            System.out.println(a.equals(d));
+        } catch (Exception e) {
+            System.out.println("an exception occurs" + e.getMessage());
+        }
+        
+        //Test case #5: compare a book object to an object that is not book
+        String e = new String("I'm not a book object");
+        try {
+            System.out.println(a.equals(e));
+        } catch (Exception ex) {
+            System.out.println("an exception occurs: " + ex.getMessage());
+        }
+        
+        //Test case #6: compare two different book objects
+        Book f = new Book("book name 2", "author name 2", "123456", 2024, 5);
+        System.out.println(b.equals(f));
+
+        //Test case #7: compare two identical book objects
+        Book g = new Book("book name 2", "author name 2", "123456", 2024, 5);
+        System.out.println(f.equals(g));
+
+        //Test case #8: check if two identical book objects have the same hashcode
+        System.out.println(f.hashCode() == g.hashCode());
    }
 }
