@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
@@ -6,21 +7,32 @@ import java.util.LinkedList;
  * Also allows saving the library state to a file and reloading it from the file.
  */
 public class Library {
-	LinkedList<Book> library = new LinkedList<Book>();
+	private static LinkedList<Book> library = new LinkedList<Book>();
+	HashMap<String,Book> isbnHashMap = new HashMap<>();
+	HashMap<String,Book> titleAuthorHashMap = new HashMap<>();
+	
 
+	private String titleAuthorKey(String title, String author) {
+		return title + author;
+	}
     /**
      * Adds a book to the library. If the library already has this book then it
      * adds the number of copies the library has.
      */
     public void addBook(Book book) {
-        // TODO: Implement this method.
-	library.add(book);
+		
+		if(book == null) {
+			throw new IllegalArgumentException("Invalid book!");
+		}
+		
         for(int i = 0; i < library.size(); i++) {
-	    if(book.equals(book)) {
-              book.addCopies(book.numberOfCopies);
-	    }
+	    	if(library.get(i).equals(book)) {
+            	library.get(i).addCopies(book.numberOfCopies);
+	    	}
         }
-        // throw new UnsupportedOperationException("not implemented");
+		library.add(book);
+		isbnHashMap.put(book.getIsbn(), book);
+		titleAuthorHashMap.put(titleAuthorKey(book.getTitle(),book.getAuthor()),book);
     }
 
     /**
@@ -28,20 +40,20 @@ public class Library {
      * exception if book doesnt exist or there are no more copies available.
      */
     public void checkout(String isbn) {
-        // TODO: Implement this method.
+
         for(int i = 0; i < library.size(); i++) {
                     
             if(library.get(i).getIsbn().equals(isbn)) {
-	        if(library.get(i).getNumberOfCopies() == 0) {
-		    throw new UnsupportedOperationException("There are no more copies left in the library");
+	        	if(library.get(i).getNumberOfCopies() == 0) {
+		    		throw new UnsupportedOperationException("There are no more copies left in the library");
                 }
 			
                 library.get(i).addCopies(-1);
-        	library.remove(i);
+        		library.remove(i);
                 break;
 			
             } else if(i == library.size() - 1) {
-                throw new NoSuchElementException("This book is not in the library");
+                throw new UnsupportedOperationException("This book is not in the library");
             }
         }
 	// throw new UnsupportedOperationException("not implemented");
@@ -51,8 +63,16 @@ public class Library {
      * Returns a book to the library
      */
     public void returnBook(String isnb) {
-        // TODO: Implement this method.
-        throw new UnsupportedOperationException("not implemented");
+        if(!isbnHashMap.containsKey(isnb)) {
+			throw new IllegalArgumentException("Invalid book!");
+		} else {
+			Book book = isbnHashMap.get(isnb);
+			book.addCopies(1);
+			if(!library.contains(book)) {
+				library.add(book);
+			}
+			System.out.println("Return book successfull!");
+		}
     }
 
     /**
@@ -60,8 +80,11 @@ public class Library {
      * doesnt exist.
      */
     public Book findByTitleAndAuthor(String title, String author) {
-        // TODO: Implement this method.
-        throw new UnsupportedOperationException("not implemented");
+        if(titleAuthorHashMap.containsKey(titleAuthorKey(title, author))) {
+			return titleAuthorHashMap.get(titleAuthorKey(title, author));
+		} else {
+			throw new IllegalArgumentException("Book: " + title + ",author: " + author + " does not exist in library");
+		}
     }
 
     /**
@@ -69,8 +92,11 @@ public class Library {
      * doesnt exist.
      */
     public Book findByISBN(String isbn) {
-        // TODO: Implement this method.
-        throw new UnsupportedOperationException("not implemented");
+        if(isbnHashMap.containsKey(isbn)) {
+			return isbnHashMap.get(isbn);
+		} else {
+			throw new IllegalArgumentException("Book has ISBN: " + isbn + " does not exist in library");
+		}
     }
 
     /**
@@ -97,16 +123,17 @@ public class Library {
 			System.out.print("library> ");
 			String line = scanner.nextLine();
 			// TODO: Implement code 
-			 if (line.isEmpty()) {
-              		  System.out.println("Error: Input cannot be empty.");
-               		 continue;}
-               } 	 if (line.startsWith("add")) {
-				 String[] parts = line.split(" ");
+			if (line.isEmpty()) {
+              	System.out.println("Error: Input cannot be empty.");
+               	continue;
+			}
+            if (line.startsWith("add")) {
+				String[] parts = line.split(" ");
 				// The format of the line is
-				 if (parts.length != 6) {
-					 System.out.println("Invalid format. Correct format: add title author isbn publicationYear numberOfCopies");
-       					 continue;
-   				 }
+				if (parts.length != 6) {
+					System.out.println("Invalid format. Correct format: add title author isbn publicationYear numberOfCopies");
+       					continue;
+   				}
 				// add title author isbn publicationYear numberOfCopies
 				String title = parts[1];
 				String author = parts[2];
@@ -185,7 +212,7 @@ public class Library {
 					 continue;
 				}String isbn = parts[1];
 				// return <isbn>
-				/ NOTE: If the book was never checked out, this code should print an error.
+				// NOTE: If the book was never checked out, this code should print an error.
 				 try {
 					 library.returnBook(isbn);
 					  System.out.println("Book returned successfully.");
@@ -242,6 +269,7 @@ public class Library {
 				break;
 			} else { 
 				System.out.println(" Invalid command(input): try again");
+			}
 		}
 	}
 }
