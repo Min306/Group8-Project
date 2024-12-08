@@ -1,10 +1,23 @@
+import java.io.IOException;
 public class Driver extends DriverBase {
-
-    @SuppressWarnings("unchecked")
+    
    public static void main(String[] args) {
-      // This code currently doesnt test anything.
-      // Print the output
-      testOutput.put("Compilation succeeded", null);
-      printJsonOutput();
+      //Initialize the library class
+       Library library = new Library();
+
+       //Test case for adding books
+       Book book1 = new Book("The Hobbit", "J.R.R. Tolkien", "12345", 5);
+       Book book2 = new Book("1984", "George Orwell", "67890", 3);
+       Book book3 = new Book("To Kill a Mockingbird", "Harper Lee", "11223", 2);
+
+       //Add the books in the library
+       library.addBook(book1);
+       library.addBook(book2);
+       library.addBook(book3);
+
+       //Print the books added
+       for(Book book : library.getBooks()) {
+           System.out.println(book);
+       }
    }
 }
