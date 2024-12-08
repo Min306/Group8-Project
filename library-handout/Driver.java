@@ -6,9 +6,9 @@ public class Driver extends DriverBase {
        Library library = new Library();
 
        //Test case for adding books
-       Book book1 = new Book("The Hobbit", "J.R.R. Tolkien", "12345", 5);
-       Book book2 = new Book("1984", "George Orwell", "67890", 3);
-       Book book3 = new Book("To Kill a Mockingbird", "Harper Lee", "11223", 2);
+       Book book1 = new Book("The Hobbit", "J.R.R. Tolkien", "12345", 5, 15);
+       Book book2 = new Book("1984", "George Orwell", "67890", 3, 10);
+       Book book3 = new Book("To Kill a Mockingbird", "Harper Lee", "11223", 2, 12);
 
        //Add the books in the library
        library.addBook(book1);
