@@ -11,10 +11,13 @@ public class Library {
 	HashMap<String,Book> isbnHashMap = new HashMap<>();
 	HashMap<String,Book> titleAuthorHashMap = new HashMap<>();
 	
-
+	/**
+     * Helper method to generate a unique key for a book using title and author.
+     */
 	private String titleAuthorKey(String title, String author) {
 		return title + author;
 	}
+
     /**
      * Adds a book to the library. If the library already has this book then it
      * adds the number of copies the library has.
@@ -28,6 +31,7 @@ public class Library {
         for(int i = 0; i < library.size(); i++) {
 	    	if(library.get(i).equals(book)) {
             	library.get(i).addCopies(book.numberOfCopies);
+				return;
 	    	}
         }
 		library.add(book);
