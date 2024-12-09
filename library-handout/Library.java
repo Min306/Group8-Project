@@ -1,4 +1,9 @@
 import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -48,23 +53,15 @@ public class Library {
      * exception if book doesnt exist or there are no more copies available.
      */
     public void checkout(String isbn) {
-
-        for(int i = 0; i < library.size(); i++) {
-                    
-            if(library.get(i).getIsbn().equals(isbn)) {
-	        	if(library.get(i).getNumberOfCopies() == 0) {
-		    		throw new UnsupportedOperationException("There are no more copies left in the library");
-                }
-			
-                library.get(i).addCopies(-1);
-        		library.remove(i);
-                break;
-			
-            } else if(i == library.size() - 1) {
-                throw new UnsupportedOperationException("This book is not in the library");
-            }
+        Book book = isbnHashMap.get(isbn);
+        if(!library.contains(book)){
+            throw new UnsupportedOperationException("This book is not in the library");
         }
-	// throw new UnsupportedOperationException("not implemented");
+        if(library.get(library.indexOf(book)).getNumberOfCopies() == 0){
+            throw new UnsupportedOperationException("There are no more copies left in the library");
+        }
+
+        library.get(library.indexOf(book)).addCopies(-1);
     }
 
     /**
@@ -111,8 +108,12 @@ public class Library {
      * Saves the contents of this library to the given file.
      */
     public void save(String filename) {
-        // TODO: Implement this method.
-        throw new UnsupportedOperationException("not implemented");
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))) {
+            out.writeObject(library);
+        } catch (IOException e) {
+            System.out.println("Error saving library: " + e.getMessage());
+        }
+	System.out.println("Library saved successfully.");
     }
 
     /**
@@ -120,8 +121,27 @@ public class Library {
      * in this library is cleared before loading from the file.
      */
     public void load(String filename) {
-        // TODO: Implement this method.
-        throw new UnsupportedOperationException("not implemented");
+        try(BufferedReader br = new BufferedReader(new FileReader(filename))){
+            String line;
+            br.readLine(); //skip the title
+            while ((line = br.readLine()) != null) {
+                // Split the line into fields
+                String[] fields = line.split(","); // Adjust if the delimiter is not a comma
+                // Add a new row to the LinkedList
+                library.add(new Book(fields[0],fields[1],fields[2],Integer.parseInt(fields[3]),Integer.parseInt(fields[4])));
+            }
+            
+            // After loading, rebuild the HashMaps
+            isbnHashMap.clear();
+            titleAuthorHashMap.clear();
+            for (Book book : library) {
+                isbnHashMap.put(book.getIsbn(), book);
+                titleAuthorHashMap.put(titleAuthorKey(book.getTitle(), book.getAuthor()), book);
+            }
+        } catch (IOException e) {
+            System.out.println("Error loading library: " + e.getMessage());
+        }
+        System.out.println("Library loaded successfully.");
     }
 
     public static void main(String[] args) {
@@ -263,5 +283,6 @@ public class Library {
             System.out.println("Invalid command(input): try again");
         }
     }
+scanner.close();
 }
 }
