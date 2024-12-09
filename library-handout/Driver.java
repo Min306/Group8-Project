@@ -11,23 +11,18 @@ public class Driver extends DriverBase {
        Book book2 = new Book("1984", "George Orwell", "67890", 3, 10);
        Book book3 = new Book("To Kill a Mockingbird", "Harper Lee", "11223", 2, 12);
 
-       //Add the books in the library
-       library.addBook(book1);
-       library.addBook(book2);
-       library.addBook(book3);
-
        //Print the books added
        for(Book book : library.getBooks()) {
            System.out.println(book);
        }
 
+       System.out.println();
+
        //Library class test cases:
 
        //Test case #1: Adding books to the library
        try {
-            Book book1 = new Book("The Hobbit", "J.R.R. Tolkien", "12345", 1937, 5);
-            Book book2 = new Book("1984", "George Orwell", "67890", 1949, 3);
-            Book book3 = new Book("To Kill a Mockingbird", "Harper Lee", "11223", 1960, 2);
+            System.out.println("Test case 1: Adding book into the library");
             library.addBook(book1);
             library.addBook(book2);
             library.addBook(book3);
@@ -37,17 +32,83 @@ public class Driver extends DriverBase {
             System.out.println("Error adding books: " + e.getMessage());
         }
 
-       // Test Case 2: Checkout a book
+        System.out.println();
+
+        //Test case 2: Adding a null value to the library
         try {
-            System.out.println("Checking out 'The Hobbit'...");
+            System.out.println("Test case 1: Adding a null value into the library");
+            library.addBook(null);
+        } catch(Exception e) {
+            System.out.println("Error adding books: " + e.getMessage());
+        }
+
+        System.out.println();
+
+       // Test Case 3: Checkout a book
+        try {
+            System.out.println("Test case 3: Checking out 'The Hobbit'...");
             library.checkout("12345");
             System.out.println("'The Hobbit' checked out successfully.");
         } catch (Exception e) {
             System.out.println("Error checking out book: " + e.getMessage());
         }
 
+        System.out.println();
 
-       
+        // Test Case 4: Finding a book by Title and Author existed in Library
+        try {
+            System.out.println("Test case 4: Finding book 'To kill a Mockingbird by Harper Lee'");
+            library.findByTitleAndAuthor("Finding book 'To kill a Mockingbird by Harper Lee", "Harper Lee");
+            System.out.println("We found the book!");
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        System.out.println();
+
+        // Test Case 5: Finding a book by Title and Author does not exist in Library
+        try {
+            System.out.println("Test case 5: Finding book 'To kill a Mockingbird by Harper Lee'");
+            library.findByTitleAndAuthor("The Hobbit", "Harper Lee");
+            System.out.println("We found the book!");
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        System.out.println();
+
+        // Test Case 6: Finding a book by ISBN
+        try{
+            System.out.println("Test case 6: Finding book with ISBN:12345");
+            library.findByISBN("12345");
+            System.out.println("We found the book!");
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        System.out.println();
+
+        // Test Case 7: Finding a book by ISBN
+        try{
+            System.out.println("Test case 7: Finding book with ISBN does not exist in library");
+            library.findByISBN("640598604");
+            System.out.println("We found the book!");
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+       System.out.println();
+        
+       // Test Case 8: Return book existed other copies in library
+        try{
+            System.out.println("Test case 8: Return book existed copies in library");
+            library.returnBook("12345");
+            System.out.println(book1.getNumberOfCopies());
+            System.out.println("Return successful!");
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+
        //Book class test cases
        //Test case #1: get hashcode for a completely null book object
         Book a = new Book(null, null, null, 0, 0);

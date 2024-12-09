@@ -8,8 +8,12 @@ import java.util.LinkedList;
  */
 public class Library {
 	private static LinkedList<Book> library = new LinkedList<Book>();
-	HashMap<String,Book> isbnHashMap = new HashMap<>();
-	HashMap<String,Book> titleAuthorHashMap = new HashMap<>();
+	private HashMap<String,Book> isbnHashMap = new HashMap<>();
+	private HashMap<String,Book> titleAuthorHashMap = new HashMap<>();
+
+    public LinkedList<Book> getBooks() {
+        return library;
+    }
 	
 	/**
      * Helper method to generate a unique key for a book using title and author.
